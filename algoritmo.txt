@@ -1,0 +1,15 @@
+desenhar a calculadora
+se a tecla (+/-) for clicada, efectuar a sinalização
+receber o primeiro valor e verificar se houve inserção de vírgula
+guardar o primeiro valor
+apresentar o primeiro valor 
+receber o tipo de operação
+apresentar o tipo de operação
+se a tecla (+/-) for clicada, efectuar a sinalização
+receber o segundo valor e verificar se houve inserção de vírgula
+guardar o segundo valor
+apresentar o segundo valor
+quando a tecla "=" é clicada, efectuar a operação escolhida anteriormente, com os valores guardados anteriormente
+quando a tecla "C" é clicada, limpar a area de visualização
+
+
