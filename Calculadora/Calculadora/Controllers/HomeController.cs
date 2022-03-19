@@ -100,7 +100,7 @@ namespace Calculadora.Controllers
                                 break;
                             case ":":
                                 visor = primeiroOperando / segundoOperando + "";
-                                break;                           
+                                break;                         
                         }
                     }              
                     // guardar os dados para a px. iteração
@@ -108,7 +108,23 @@ namespace Calculadora.Controllers
                     operando = visor;
                     limpaVisor = "sim";
 
-                    break;            
+                    break;
+                case "C":
+                    visor = "";
+                    operador = "";
+                    operando = "";
+                    break;
+                case "=":
+                    double primeiroOperandoteste = Convert.ToDouble(operando);
+                    double segundoOperandoteste = Convert.ToDouble(visor);
+                    if (operador.Contains("+")) { visor = (primeiroOperandoteste + segundoOperandoteste).ToString(); }
+                    else if (operador.Contains("-")) { visor = (primeiroOperandoteste - segundoOperandoteste).ToString(); }
+                    else if (operador.Contains("x")) { visor = (primeiroOperandoteste * segundoOperandoteste).ToString(); }
+                    else { visor = (primeiroOperandoteste / segundoOperandoteste).ToString(); }
+                    operador = "";
+                    operando = "";
+                    break;
+
             }
 
             // preparar dados a serem enviados para a View
