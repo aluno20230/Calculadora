@@ -7,7 +7,14 @@
     <h4>Exemplificação da interação entre o <i>Cliente</i> e o <i>Servidor</i>.</h4>
 </div>
 
+
+
 <form method="post">
+    <!-- 'variáveis' para guardar os dados temporários da calculadora -->
+    @* esta linha de comentário é invisível ao browser *@
+    <input type="hidden" value="@ViewBag.Operador" name="operador" />
+    <input type="hidden" value="@ViewBag.Operando" name="operando" />
+    <input type="hidden" value="@ViewBag.LimpaVisor" name="limpaVisor" />
 
     <table border="0"
            style="border-spacing:3px;
@@ -19,7 +26,7 @@
             <td colspan="4">
                 <input type="text"
                        name="visor"
-                       value=@ViewBag.Visor
+                       value="@ViewBag.Visor"
                        readonly="readonly"
                        style="text-align:right;
                           width:167px;"

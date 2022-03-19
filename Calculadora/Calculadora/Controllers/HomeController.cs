@@ -1,5 +1,7 @@
 ﻿using Calculadora.Models;
+
 using Microsoft.AspNetCore.Mvc;
+
 using System.Diagnostics;
 
 namespace Calculadora.Controllers
@@ -13,17 +15,31 @@ namespace Calculadora.Controllers
             _logger = logger;
         }
 
-        [HttpGet] //esta anotação é facultativa
+
+
+        [HttpGet]  // esta anotação é facultativa
         public IActionResult Index()
         {
-            //inicializar a calculadora
+
+            // inicializar a calculadora
             ViewBag.Visor = "0";
+
+
             return View();
         }
 
-        [HttpPost] //mas esta anotação já é obrigatória, para o método 'escutar' o HTTP POST
-        public IActionResult Index(string botao, string visor)
+
+
+        [HttpPost]  // mas, esta anotação já é obrigatória, para o método 'escutar' o HTTP POST
+        public IActionResult Index(
+           string botao,
+           string visor,
+           string operador,
+           string operando,
+           string limpaVisor)
         {
+
+
             switch (botao)
             {
                 case "0":
@@ -36,25 +52,77 @@ namespace Calculadora.Controllers
                 case "7":
                 case "8":
                 case "9":
-                    //atribuir ao visor o algarismo seleccionado
-                    if(visor!="0") visor=visor + botao;
+                    // atribuir ao VISOR o algarismo selecionado
+                    if (limpaVisor != "sim" && visor != "0") visor = visor + botao;
                     else { visor = botao; }
+                    // indica q o visor já não precisa de ser limpo
+                    limpaVisor = "nao";
                     break;
                 case ",":
-                    if (!visor.Contains(",")) visor += ",";
+                    // transforma o num inteiro em real
+                    if (limpaVisor == "sim")
+                    {
+                        visor = "0,";
+                        limpaVisor = "nao";
+                    }
+                    else
+                    {
+                        if (!visor.Contains(',')) visor += ",";
+                    }
                     break;
                 case "+/-":
-                    //visor -123
-                    if (visor.StartsWith("-")) visor = visor.Substring(1);
+                    //  inverte o valor do visor
+                    if (visor.StartsWith('-')) visor = visor.Substring(1);
                     else visor = "-" + visor;
+                    // poderíamos executar esta mesma operação de forma algébrica
                     break;
+                case "+":
+                case "-":
+                case "x":
+                case ":":
+                    // processar as tarefas associadas aos operadores
+                    if (!string.IsNullOrEmpty(operando))
+                    {
+                        // 2ª, 3ª, etc. escolha de operador
+                        // agora temos mesmo de fazer as contas
+                        double primeiroOperando = Convert.ToDouble(operando);
+                        double segundoOperando = Convert.ToDouble(visor);
+                        switch (operador)
+                        {
+                            case "+":
+                                visor = Convert.ToString(primeiroOperando + segundoOperando);
+                                break;
+                            case "-":
+                                visor = (primeiroOperando - segundoOperando).ToString();
+                                break;
+                            case "x":
+                                visor = primeiroOperando * segundoOperando + "";
+                                break;
+                            case ":":
+                                visor = primeiroOperando / segundoOperando + "";
+                                break;                           
+                        }
+                    }              
+                    // guardar os dados para a px. iteração
+                    operador = botao;
+                    operando = visor;
+                    limpaVisor = "sim";
 
+                    break;            
             }
-            //preparar dados a serem enviados para a view
-            ViewBag.Visor=visor;
+
+            // preparar dados a serem enviados para a View
+            ViewBag.Visor = visor;
+            ViewBag.Operando = operando;
+            ViewBag.Operador = operador;
+            ViewBag.LimpaVisor = limpaVisor;
 
             return View();
         }
+
+
+
+
 
         public IActionResult Privacy()
         {
